@@ -4,10 +4,10 @@
 PhysicsManager:
   m_ObjectHideFlags: 0
   serializedVersion: 7
-  m_Gravity: {x: 0, y: -9.81, z: 0}
-  m_DefaultMaterial: {fileID: 0}
+  m_Gravity: {x: 0, y: -17, z: 0}
+  m_DefaultMaterial: {fileID: 13400000, guid: 23b3e65e8933f4540933b43e8033912b, type: 2}
   m_BounceThreshold: 2
-  m_SleepThreshold: 0.005
+  m_SleepThreshold: 0.003
   m_DefaultContactOffset: 0.01
   m_DefaultSolverIterations: 6
   m_DefaultSolverVelocityIterations: 1
