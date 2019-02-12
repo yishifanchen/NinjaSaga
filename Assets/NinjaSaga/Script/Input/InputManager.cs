@@ -9,6 +9,8 @@ public class InputManager : MonoBehaviour {
     public KeyCode Right = KeyCode.RightArrow;
     public KeyCode Up = KeyCode.UpArrow;
     public KeyCode Down = KeyCode.DownArrow;
+    public KeyCode GeneralAttackKey = KeyCode.X;
+    public KeyCode HeavyBlowKey = KeyCode.Z;
 
     public delegate void InputEventHandler(Vector2 dir);
     public static event InputEventHandler onInputEvent;

@@ -14,10 +14,16 @@ public class PlayerMovement : MonoBehaviour {
     private CapsuleCollider capsule;
 
     [Header("Settings")]
-    public float walkSpeed = 3f;
-    public float ZSpeed = 1.5f;
+    public float walkSpeed = 3f;//行走速度
+    public float ZSpeed = 1.5f;//Z轴速度
+    public float rotationSpeed = 15;//转向速度
+    public float jumpRotationSpeed = 30;//跳跃转向速度
 
-    private Vector2 inputDirection;
+    [Header("Stats")]
+    public DIRECTION currentDirection;
+    public Vector2 inputDirection;
+    public bool isGrounded=true;
+
     private Vector3 fixedVelocity;
     private bool updateVelocity;
 
@@ -65,20 +71,48 @@ public class PlayerMovement : MonoBehaviour {
             SetVelocity(new Vector3(0, rb.velocity.y + Physics.gravity.y * Time.fixedDeltaTime, 0));
             SetPLayerState(UNITSTATE.IDLE);
         }
+
+        //set current direction based on the input vector.(ignore up and down by using 'mathf.sign' because we want the player to stay int current direction when moving up/down)
+        int dir = Mathf.RoundToInt(Mathf.Sign((float)-inputDirection.x));
+        if (Mathf.Abs(inputDirection.x) > 0)
+        {
+            currentDirection = (DIRECTION)dir;
+        }
+        LookToDir(currentDirection);
         animator.SetAnimatorFloat("MovementSpeed",rb.velocity.magnitude);
     }
+    /// <summary>
+    /// 设置移动速度
+    /// </summary>
+    /// <param name="velocity"></param>
     void SetVelocity(Vector3 velocity)
     {
         fixedVelocity = velocity;
         updateVelocity = true;
     }
+    /// <summary>
+    /// 设置玩家动作状态
+    /// </summary>
+    /// <param name="state"></param>
     public void SetPLayerState(UNITSTATE state)
     {
         if (playerState != null)
             playerState.SetState(state);
         else
             Debug.LogError("No playerstate found on this gamaobject");
-
+    }
+    public void LookToDir(DIRECTION dir)
+    {
+        Vector3 newDir = Vector3.zero;
+        if (dir == DIRECTION.Right || dir == DIRECTION.Left)
+        {
+            if (isGrounded)
+            {
+                newDir = Vector3.RotateTowards(transform.forward, Vector3.forward * -(int)dir, rotationSpeed*Time.deltaTime,0);
+            }
+            transform.rotation = Quaternion.LookRotation(newDir);
+            currentDirection = dir;
+        }
     }
     private void OnEnable()
     {
@@ -89,4 +123,11 @@ public class PlayerMovement : MonoBehaviour {
         InputManager.onInputEvent -= InputEvent;
     }
     
+}
+public enum DIRECTION
+{
+    Right=-1,
+    Left=1,
+    Up=2,
+    Down=-2
 }
