@@ -157,6 +157,10 @@ MonoBehaviour:
   Right: 275
   Up: 273
   Down: 274
+  GeneralAttackKey: 120
+  HeavyBlowKey: 122
+  DefendKey: 100
+  JumpKey: 99
   dir: {x: 0, y: 0}
 --- !u!1 &170076733
 GameObject:
@@ -312,7 +316,7 @@ GameObject:
   - component: {fileID: 1023350349}
   - component: {fileID: 1023350348}
   - component: {fileID: 1023350347}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +434,47 @@ Prefab:
     - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
         type: 2}
       propertyPath: walkSpeed
-      value: 4
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: collisionLayer.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 136844296096841756, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: m_Radius
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: zSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: rotationSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: jumpRotationSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: AllowDepthJumping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114959430408074284, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: AirMaxSpeed
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a2e7b3afa1f1ec48abceef3322502c7, type: 2}

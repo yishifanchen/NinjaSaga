@@ -9,11 +9,16 @@ public class InputManager : MonoBehaviour {
     public KeyCode Right = KeyCode.RightArrow;
     public KeyCode Up = KeyCode.UpArrow;
     public KeyCode Down = KeyCode.DownArrow;
-    public KeyCode GeneralAttackKey = KeyCode.X;
-    public KeyCode HeavyBlowKey = KeyCode.Z;
+    public KeyCode GeneralAttackKey = KeyCode.X;//普攻
+    public KeyCode HeavyBlowKey = KeyCode.Z;//重击
+    public KeyCode DefendKey = KeyCode.D;//防御、格挡
+    public KeyCode JumpKey = KeyCode.C;//跳跃
 
+    //输入委托
     public delegate void InputEventHandler(Vector2 dir);
     public static event InputEventHandler onInputEvent;
+    public delegate void CombatInputEventHandler(INPUTACTION action);
+    public static event CombatInputEventHandler onCombatInputEvent;
 
     [HideInInspector]
     public Vector2 dir;
@@ -34,9 +39,25 @@ public class InputManager : MonoBehaviour {
         if (Input.GetKey(Down)) y = -1;
         dir = new Vector2(x,y);
         InputEvent(dir);
+
+        if (Input.GetKeyDown(JumpKey)) CombatInputEvent(INPUTACTION.JUMP);
+        if (Input.GetKeyDown(GeneralAttackKey)) CombatInputEvent(INPUTACTION.GENERALATTACK);
+        if (Input.GetKeyDown(HeavyBlowKey)) CombatInputEvent(INPUTACTION.HEAVYBLOWKEY);
     }
     public static void InputEvent(Vector2 dir)
     {
         if (onInputEvent != null) onInputEvent(dir);
     }
+    public static void CombatInputEvent(INPUTACTION action)
+    {
+        if (onCombatInputEvent != null) onCombatInputEvent(action);
+    }
+}
+public enum INPUTACTION
+{
+    NONE,
+    GENERALATTACK,
+    HEAVYBLOWKEY,
+    JUMP,
+    DEFEND
 }

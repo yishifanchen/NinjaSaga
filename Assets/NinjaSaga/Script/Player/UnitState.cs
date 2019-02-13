@@ -15,6 +15,7 @@ public enum UNITSTATE
     WALK,
     RUN,
     JUMPING,
+    LAND,
     PUNCH,
     KICK,
     DEATH,

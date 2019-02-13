@@ -4,6 +4,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class UnitAnimator : MonoBehaviour {
+    [HideInInspector]
+    public DIRECTION currentDirection;//当前方向
 
     [HideInInspector]
     public Animator animator;
@@ -11,6 +13,7 @@ public class UnitAnimator : MonoBehaviour {
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
+        currentDirection = DIRECTION.Right;
     }
 
     public void SetAnimatorTrigger(string name)
@@ -24,5 +27,9 @@ public class UnitAnimator : MonoBehaviour {
     public void SetAnimatorFloat(string name,float value)
     {
         animator.SetFloat(name,value);
+    }
+    public void SetDirection(DIRECTION dir)
+    {
+        currentDirection = dir;
     }
 }
