@@ -5,7 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(UnitState))]
 [RequireComponent(typeof(CapsuleCollider))]
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : MonoBehaviour
+{
 
     [Header("Link Components")]
     private UnitAnimator animator;
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     [Header("Stats")]
     public DIRECTION currentDirection;
     public Vector2 inputDirection;
-    public bool isGrounded=true;
+    public bool isGrounded = true;
     public bool jumpInProgress;
 
     private Vector3 fixedVelocity;
@@ -49,7 +50,7 @@ public class PlayerMovement : MonoBehaviour {
         if (!playerState) playerState = GetComponent<UnitState>();
         if (!capsule) capsule = GetComponent<CapsuleCollider>();
 
-        if (!animator) Debug.LogError("No animator found inside"+gameObject.name);
+        if (!animator) Debug.LogError("No animator found inside" + gameObject.name);
         if (!rb) Debug.LogError("No rigidbody component found on " + gameObject.name);
         if (!playerState) Debug.LogError("No UnitState component found on " + gameObject.name);
         if (!capsule) Debug.LogError("No Capsule Collider found on " + gameObject.name);
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour {
             animator.SetAnimatorBool("Falling", !isGrounded && rb.velocity.y < 0.1f);
         }
 
-        if (updateVelocity&&MovementStates.Contains(playerState.currentState))
+        if (updateVelocity && MovementStates.Contains(playerState.currentState))
         {
             rb.velocity = fixedVelocity;
             updateVelocity = false;
@@ -132,7 +133,7 @@ public class PlayerMovement : MonoBehaviour {
             currentDirection = (DIRECTION)dir;
         }
         LookToDir(currentDirection);
-        animator.SetAnimatorFloat("MovementSpeed",rb.velocity.magnitude);
+        animator.SetAnimatorFloat("MovementSpeed", rb.velocity.magnitude);
     }
     private void MoveAirborne()
     {
@@ -180,7 +181,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (isGrounded)
             {
-                newDir = Vector3.RotateTowards(transform.forward, Vector3.forward * -(int)dir, rotationSpeed*Time.deltaTime,0);
+                newDir = Vector3.RotateTowards(transform.forward, Vector3.forward * -(int)dir, rotationSpeed * Time.deltaTime, 0);
             }
             else
             {
@@ -199,7 +200,7 @@ public class PlayerMovement : MonoBehaviour {
         //播放动画
         animator.SetAnimatorBool("JumpInProgress", true);
         animator.SetAnimatorTrigger("JumpUp");
-        
+
         //set state
         yield return new WaitForFixedUpdate();
 
@@ -220,8 +221,8 @@ public class PlayerMovement : MonoBehaviour {
         SetVelocity(Vector3.zero);
         playerState.SetState(UNITSTATE.LAND);
 
-        animator.SetAnimatorFloat("MovementSpeed",0f);
-        animator.SetAnimatorBool("JumpInProgress",false);
+        animator.SetAnimatorFloat("MovementSpeed", 0f);
+        animator.SetAnimatorBool("JumpInProgress", false);
 
         jumpInProgress = false;
         if (playerState.currentState == UNITSTATE.LAND)
@@ -240,12 +241,12 @@ public class PlayerMovement : MonoBehaviour {
         InputManager.onInputEvent -= InputEvent;
         InputManager.onCombatInputEvent -= InputEventAction;
     }
-    
+
 }
 public enum DIRECTION
 {
-    Right=-1,
-    Left=1,
-    Up=2,
-    Down=-2
+    Right = -1,
+    Left = 1,
+    Up = 2,
+    Down = -2
 }

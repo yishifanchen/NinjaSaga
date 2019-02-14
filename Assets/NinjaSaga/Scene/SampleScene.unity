@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -260,8 +260,8 @@ Camera:
   m_GameObject: {fileID: 534669902}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -479,3 +479,103 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a2e7b3afa1f1ec48abceef3322502c7, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &2041982818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1694107619149248, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1188429903}
+--- !u!114 &2041982819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2041982818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa35b000b4ee5b44e8a552eef0ac97ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponBone: {fileID: 0}
+  hitZRange: 2
+  generalAttackCombo:
+  - animTrigger: GeneralAttack1
+    damage: 1
+    duration: 0.5
+    comboResetTime: 0.35
+    hitSFX: 
+    knockDown: 0
+    slowMotionEffect: 0
+    defenceOverride: 0
+    isGroundAttack: 0
+    collSize: 1
+    collDistance: 0.76
+    collHeight: 1.17
+    inflictor: {fileID: 0}
+  - animTrigger: GeneralAttack2
+    damage: 1
+    duration: 0.3
+    comboResetTime: 0.35
+    hitSFX: 
+    knockDown: 0
+    slowMotionEffect: 0
+    defenceOverride: 0
+    isGroundAttack: 0
+    collSize: 1
+    collDistance: 0.76
+    collHeight: 1.17
+    inflictor: {fileID: 0}
+  - animTrigger: GeneralAttack3
+    damage: 2
+    duration: 0.35
+    comboResetTime: 0.35
+    hitSFX: 
+    knockDown: 1
+    slowMotionEffect: 0
+    defenceOverride: 0
+    isGroundAttack: 0
+    collSize: 1
+    collDistance: 0.76
+    collHeight: 1.17
+    inflictor: {fileID: 0}
+  - animTrigger: GeneralAttack4
+    damage: 2
+    duration: 0.35
+    comboResetTime: 0.35
+    hitSFX: 
+    knockDown: 1
+    slowMotionEffect: 0
+    defenceOverride: 0
+    isGroundAttack: 0
+    collSize: 1
+    collDistance: 0.76
+    collHeight: 1.17
+    inflictor: {fileID: 0}
+  - animTrigger: GeneralAttack5
+    damage: 2
+    duration: 0.35
+    comboResetTime: 0.35
+    hitSFX: 
+    knockDown: 1
+    slowMotionEffect: 0
+    defenceOverride: 0
+    isGroundAttack: 0
+    collSize: 1
+    collDistance: 0.76
+    collHeight: 1.17
+    inflictor: {fileID: 0}
+  heavyBlowData:
+    animTrigger: 
+    damage: 0
+    duration: 0
+    comboResetTime: 0
+    hitSFX: 
+    knockDown: 0
+    slowMotionEffect: 0
+    defenceOverride: 0
+    isGroundAttack: 0
+    collSize: 0
+    collDistance: 0
+    collHeight: 0
+    inflictor: {fileID: 0}
+  currentDirection: 0
+  isGrounded: 0

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour {
+public class InputManager : MonoBehaviour
+{
 
     [Header("Keyboard keys")]
     public KeyCode Left = KeyCode.LeftArrow;
@@ -37,7 +38,7 @@ public class InputManager : MonoBehaviour {
         if (Input.GetKey(Right)) x = 1;
         if (Input.GetKey(Up)) y = 1;
         if (Input.GetKey(Down)) y = -1;
-        dir = new Vector2(x,y);
+        dir = new Vector2(x, y);
         InputEvent(dir);
 
         if (Input.GetKeyDown(JumpKey)) CombatInputEvent(INPUTACTION.JUMP);

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitState : MonoBehaviour {
+public class UnitState : MonoBehaviour
+{
     public UNITSTATE currentState = UNITSTATE.IDLE;
     public void SetState(UNITSTATE state)
     {
@@ -16,7 +17,7 @@ public enum UNITSTATE
     RUN,
     JUMPING,
     LAND,
-    PUNCH,
-    KICK,
+    GENERALATTACK,
+    HEAVYBLOW,
     DEATH,
 }
