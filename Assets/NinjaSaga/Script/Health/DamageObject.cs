@@ -18,7 +18,7 @@ public class DamageObject
     public float collHeight;
 
     [HideInInspector]
-    public GameObject inflictor;
+    public GameObject inflictor;//加害者
     public DamageObject(int _damage, GameObject _inflictor)
     {
         damage = _damage;

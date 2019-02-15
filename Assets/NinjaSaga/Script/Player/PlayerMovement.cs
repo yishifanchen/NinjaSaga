@@ -7,7 +7,6 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider))]
 public class PlayerMovement : MonoBehaviour
 {
-
     [Header("Link Components")]
     private UnitAnimator animator;
     private Rigidbody rb;
@@ -54,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         if (!rb) Debug.LogError("No rigidbody component found on " + gameObject.name);
         if (!playerState) Debug.LogError("No UnitState component found on " + gameObject.name);
         if (!capsule) Debug.LogError("No Capsule Collider found on " + gameObject.name);
+        currentDirection = DIRECTION.Right;
     }
     void FixedUpdate()
     {
@@ -63,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetAnimatorBool("isGrounded", isGrounded);
             animator.SetAnimatorBool("Falling", !isGrounded && rb.velocity.y < 0.1f);
+            animator.currentDirection = currentDirection;
         }
 
         if (updateVelocity && MovementStates.Contains(playerState.currentState))

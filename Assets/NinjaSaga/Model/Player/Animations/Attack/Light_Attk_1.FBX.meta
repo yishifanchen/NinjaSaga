@@ -255,7 +255,22 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.09537357
+        functionName: AddForce
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 4
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.19057477
+        functionName: ShowEffect
+        data: GeneralAttack1
+        objectReferenceParameter: {fileID: 1257059955616630, guid: 6e081553661dc8b48a79141dd472f5d1,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

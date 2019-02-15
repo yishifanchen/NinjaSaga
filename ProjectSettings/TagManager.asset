@@ -16,8 +16,8 @@ TagManager:
   - PostProcessing
   - Player
   - Environment
-  - 
-  - 
+  - Enemy
+  - DestroyableObjectLayer
   - 
   - 
   - 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-
     [Header("Keyboard keys")]
     public KeyCode Left = KeyCode.LeftArrow;
     public KeyCode Right = KeyCode.RightArrow;
@@ -23,7 +22,7 @@ public class InputManager : MonoBehaviour
 
     [HideInInspector]
     public Vector2 dir;
-
+    public static bool defendKeyDown;
 
     private void Update()
     {
@@ -44,6 +43,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(JumpKey)) CombatInputEvent(INPUTACTION.JUMP);
         if (Input.GetKeyDown(GeneralAttackKey)) CombatInputEvent(INPUTACTION.GENERALATTACK);
         if (Input.GetKeyDown(HeavyBlowKey)) CombatInputEvent(INPUTACTION.HEAVYBLOWKEY);
+        defendKeyDown = Input.GetKey(DefendKey);
     }
     public static void InputEvent(Vector2 dir)
     {
@@ -52,6 +52,14 @@ public class InputManager : MonoBehaviour
     public static void CombatInputEvent(INPUTACTION action)
     {
         if (onCombatInputEvent != null) onCombatInputEvent(action);
+    }
+    /// <summary>
+    /// 是否按下防御键
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDefendKeyDown()
+    {
+        return defendKeyDown;
     }
 }
 public enum INPUTACTION

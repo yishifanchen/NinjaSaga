@@ -4,12 +4,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(UnitState))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerCombat : MonoBehaviour
+[RequireComponent(typeof(PlayerMovement))]
+public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
 {
     [Header("Linked Components")]
     public Transform weaponBone;
     private UnitAnimator animator;
     private UnitState playerState;
+    private PlayerMovement playerMovement;
     private Rigidbody rb;
 
     [Header("Attack Date & Combos")]
@@ -21,6 +23,9 @@ public class PlayerCombat : MonoBehaviour
     public DamageObject heavyBlowData;//重击数据
     private DamageObject lastAttack;
 
+    [Header("Settings")]
+    public bool canTurnWhileDefending;//allow turning while defending
+
     [Header("Stats")]
     public DIRECTION currentDirection;
     private float lastAttackTime = 0;//time of the last attack
@@ -28,6 +33,11 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField]
     private bool isGrounded;
+    private int enemyLayer;
+    private int destroyableObjectLayer;
+    private LayerMask hitLayerMask;//a list of all hitable objects
+    private Vector3 fixedVelocity;
+    private bool updateVelocity;
     private InputManager inputManager;
     private INPUTACTION lastAttackInput;
     private DIRECTION lastAttackDirection;
@@ -36,24 +46,41 @@ public class PlayerCombat : MonoBehaviour
     {
         animator = GetComponentInChildren<UnitAnimator>();
         playerState = GetComponent<UnitState>();
+        playerMovement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody>();
         inputManager = GameObject.FindObjectOfType<InputManager>();
+        currentDirection = DIRECTION.Right;
+
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+        destroyableObjectLayer = LayerMask.NameToLayer("DestroyableObject");
+        hitLayerMask = (1 << enemyLayer | 1 << destroyableObjectLayer);
     }
-    int anjiancount = 0;
-    int zhixingcount = 0;
     private void Update()
     {
         if (animator) isGrounded = animator.animator.GetBool("isGrounded");
-        if (Input.GetKeyDown(KeyCode.X))
+        if (isGrounded) Defend(inputManager.IsDefendKeyDown());
+    }
+    private void FixedUpdate()
+    {
+        if (updateVelocity)
         {
-            anjiancount++;
-            //print("按键次数" + anjiancount + "\\执行次数" + zhixingcount);
+            rb.velocity = fixedVelocity;
+            updateVelocity = false;
         }
     }
+    /// <summary>
+    /// 移动输入事件
+    /// </summary>
+    /// <param name="inputVector"></param>
     private void MovementInputEvent(Vector2 inputVector)
     {
-
+        int dir = Mathf.RoundToInt(Mathf.Sign((float)-inputVector.x));
+        if (Mathf.Abs(inputVector.x) > 0) currentDirection = (DIRECTION)dir;
     }
+    /// <summary>
+    /// 战斗输入事件
+    /// </summary>
+    /// <param name="action"></param>
     private void CombatInputEvent(INPUTACTION action)
     {
         //普攻
@@ -70,7 +97,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
         //如果在一次普攻动作进行中又按下了普攻键，则进行普攻连击
-        if (action == INPUTACTION.GENERALATTACK && (playerState.currentState == UNITSTATE.GENERALATTACK) && !continueGeneralAttackCombo && isGrounded)
+        if (action == INPUTACTION.GENERALATTACK && (playerState.currentState == UNITSTATE.GENERALATTACK) && Time.time > (lastAttackTime + lastAttack.duration-0.1f) && !continueGeneralAttackCombo && isGrounded)
         {
             if (attackNum < generalAttackCombo.Length - 1)
             {
@@ -87,6 +114,7 @@ public class PlayerCombat : MonoBehaviour
         lastAttack.inflictor = gameObject;
         lastAttackTime = Time.time;
         lastAttackDirection = currentDirection;
+        TurnToDir(currentDirection);
         Invoke("Ready", d.duration);
     }
     /// <summary>
@@ -105,9 +133,74 @@ public class PlayerCombat : MonoBehaviour
                 DoAttack(generalAttackCombo[attackNum], UNITSTATE.GENERALATTACK, INPUTACTION.GENERALATTACK);
             return;
         }
-
         playerState.SetState(UNITSTATE.IDLE);
     }
+    /// <summary>
+    /// set defence on/off
+    /// </summary>
+    /// <param name="defend"></param>
+    private void Defend(bool defend)
+    {
+        animator.SetAnimatorBool("Defend",defend);
+        if (defend)
+        {
+            //keep turn direction while defending
+            if (!canTurnWhileDefending)
+            {
+                int rot = Mathf.RoundToInt(transform.rotation.eulerAngles.y);
+                if (rot >= 180 && rot <= 270)
+                    currentDirection = DIRECTION.Left;
+                else
+                    currentDirection = DIRECTION.Right;
+                playerMovement.currentDirection = currentDirection;
+            }
+            TurnToDir(currentDirection);
+            SetVelocity(Vector3.zero);
+            playerState.SetState(UNITSTATE.DEFEND);
+        }else if(playerState.currentState==UNITSTATE.DEFEND)
+        {
+            playerState.SetState(UNITSTATE.IDLE);
+        }
+    }
+    /// <summary>
+    /// 转向
+    /// </summary>
+    /// <param name="dir"></param>
+    public void TurnToDir(DIRECTION dir)
+    {
+        transform.rotation = Quaternion.LookRotation(Vector3.forward*-(int)dir);
+    }
+    private void SetVelocity(Vector3 velocity)
+    {
+        fixedVelocity = velocity;
+        updateVelocity = true;
+    }
+    //we are hit
+    public void Hit(DamageObject d)
+    {
+
+    }
+    /// <summary>
+    /// check if we have hit something (animation event)
+    /// </summary>
+    public void CheckForHit()
+    {
+        Vector3 boxPosition = transform.position + (Vector3.up * lastAttack.collHeight) + Vector3.right * ((int)lastAttackDirection * lastAttack.collDistance);
+        Vector3 boxSize = new Vector3(lastAttack.collSize / 2, lastAttack.collSize / 2, hitZRange / 2);
+        Collider[] hitColliders = Physics.OverlapBox(boxPosition, boxSize, Quaternion.identity, hitLayerMask);
+    }
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (lastAttack != null && Time.time - lastAttackTime < lastAttack.duration)
+        {
+            Gizmos.color = Color.red;
+            Vector3 boxPosition=transform.position+(Vector3.up*lastAttack.collHeight)+Vector3.right*((int)lastAttackDirection*lastAttack.collDistance);
+            Vector3 boxSize = new Vector3(lastAttack.collSize, lastAttack.collSize, hitZRange);
+            Gizmos.DrawWireCube(boxPosition,boxSize);
+        }
+    }
+#endif
     private void OnEnable()
     {
         InputManager.onInputEvent += MovementInputEvent;
@@ -118,4 +211,5 @@ public class PlayerCombat : MonoBehaviour
         InputManager.onInputEvent -= MovementInputEvent;
         InputManager.onCombatInputEvent -= CombatInputEvent;
     }
+    
 }

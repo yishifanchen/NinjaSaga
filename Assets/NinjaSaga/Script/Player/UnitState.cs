@@ -20,4 +20,5 @@ public enum UNITSTATE
     GENERALATTACK,
     HEAVYBLOW,
     DEATH,
+    DEFEND
 }
