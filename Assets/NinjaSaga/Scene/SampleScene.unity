@@ -179,7 +179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &129315491
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -313,6 +313,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &199255128 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4280261814400840, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1188429903}
 --- !u!1 &376515834
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +335,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &376515835
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -392,7 +397,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 376515834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.48, y: 0.7, z: -0.02}
+  m_LocalPosition: {x: -0.354, y: 0.7, z: 0.221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -562,23 +567,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1171800824 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1328462023335964, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
-    type: 2}
-  m_PrefabInternal: {fileID: 1188429903}
---- !u!65 &1171800825
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1171800824}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.18230902, y: 1.0808113, z: 0.1507363}
-  m_Center: {x: 0.03344184, y: -0.37036714, z: -0.005454831}
 --- !u!1001 &1188429903
 Prefab:
   m_ObjectHideFlags: 0
@@ -663,6 +651,11 @@ Prefab:
       propertyPath: AirMaxSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 137108160100793382, guid: 4a2e7b3afa1f1ec48abceef3322502c7,
+        type: 2}
+      propertyPath: m_SkinnedMotionVectors
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a2e7b3afa1f1ec48abceef3322502c7, type: 2}
   m_IsPrefabAsset: 0
@@ -683,6 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponBone: {fileID: 0}
+  swordHandPos: {fileID: 199255128}
   hitZRange: 2
   generalAttackCombo:
   - animTrigger: GeneralAttack1
@@ -695,7 +689,7 @@ MonoBehaviour:
     defenceOverride: 0
     isGroundAttack: 0
     collSize: 1
-    collDistance: 0.76
+    collDistance: 0.5
     collHeight: 1.17
     inflictor: {fileID: 0}
   - animTrigger: GeneralAttack2
@@ -708,7 +702,7 @@ MonoBehaviour:
     defenceOverride: 0
     isGroundAttack: 0
     collSize: 1
-    collDistance: 0.76
+    collDistance: 0.5
     collHeight: 1.17
     inflictor: {fileID: 0}
   - animTrigger: GeneralAttack3
@@ -721,12 +715,12 @@ MonoBehaviour:
     defenceOverride: 0
     isGroundAttack: 0
     collSize: 1
-    collDistance: 0.76
+    collDistance: 0.5
     collHeight: 1.17
     inflictor: {fileID: 0}
   - animTrigger: GeneralAttack4
     damage: 2
-    duration: 0.45
+    duration: 0.6
     comboResetTime: 0.3
     hitSFX: 
     knockDown: 1
@@ -734,7 +728,7 @@ MonoBehaviour:
     defenceOverride: 0
     isGroundAttack: 0
     collSize: 1
-    collDistance: 0.76
+    collDistance: 0.5
     collHeight: 1.17
     inflictor: {fileID: 0}
   - animTrigger: GeneralAttack5
@@ -747,7 +741,7 @@ MonoBehaviour:
     defenceOverride: 0
     isGroundAttack: 0
     collSize: 1
-    collDistance: 0.76
+    collDistance: 0.5
     collHeight: 1.17
     inflictor: {fileID: 0}
   heavyBlowData:
@@ -766,7 +760,7 @@ MonoBehaviour:
     inflictor: {fileID: 0}
   canTurnWhileDefending: 0
   currentDirection: 0
-  isGrounded: 0
+  targetHit: 0
 --- !u!114 &2041982820
 MonoBehaviour:
   m_ObjectHideFlags: 0

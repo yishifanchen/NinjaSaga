@@ -72,4 +72,16 @@ public class UnitAnimator : MonoBehaviour
     {
         playerEffect.ShowEffect(effect, transform.position, transform.rotation);
     }
+    public void Check4Hit()
+    {
+        PlayerCombat playerCombat = transform.parent.GetComponent<PlayerCombat>();
+        if (playerCombat != null)
+        {
+            playerCombat.CheckForHit();
+        }
+        else
+        {
+            Debug.LogError("No playerCombat component find on object"+transform.parent);
+        }
+    }
 }

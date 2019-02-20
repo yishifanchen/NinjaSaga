@@ -263,11 +263,18 @@ ModelImporter:
         floatParameter: 4
         intParameter: 0
         messageOptions: 0
-      - time: 0.19057477
+      - time: 0.19462335
         functionName: ShowEffect
         data: GeneralAttack1
         objectReferenceParameter: {fileID: 1257059955616630, guid: 6e081553661dc8b48a79141dd472f5d1,
           type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.226417
+        functionName: Check4Hit
+        data: 
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

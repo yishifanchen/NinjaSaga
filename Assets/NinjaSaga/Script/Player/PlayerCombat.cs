@@ -9,6 +9,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
 {
     [Header("Linked Components")]
     public Transform weaponBone;
+    public Transform swordHandPos;
     private UnitAnimator animator;
     private UnitState playerState;
     private PlayerMovement playerMovement;
@@ -32,6 +33,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
     private bool continueGeneralAttackCombo;//true if a generalattack combo need to continue;
 
     [SerializeField]
+    private bool targetHit;
     private bool isGrounded;
     private int enemyLayer;
     private int destroyableObjectLayer;
@@ -185,9 +187,27 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
     /// </summary>
     public void CheckForHit()
     {
-        Vector3 boxPosition = transform.position + (Vector3.up * lastAttack.collHeight) + Vector3.right * ((int)lastAttackDirection * lastAttack.collDistance);
-        Vector3 boxSize = new Vector3(lastAttack.collSize / 2, lastAttack.collSize / 2, hitZRange / 2);
-        Collider[] hitColliders = Physics.OverlapBox(boxPosition, boxSize, Quaternion.identity, hitLayerMask);
+        //Vector3 boxPosition = transform.position + (Vector3.up * lastAttack.collHeight) + Vector3.right * ((int)lastAttackDirection * lastAttack.collDistance);
+        //Vector3 boxSize = new Vector3(lastAttack.collSize / 2, lastAttack.collSize / 2, hitZRange / 2);
+        //Collider[] hitColliders = Physics.OverlapBox(boxPosition, boxSize, Quaternion.identity, hitLayerMask);
+
+        Vector3 boxPosition = swordHandPos.position;
+        float radius = lastAttack.collDistance;
+        Collider[] hitColliders = Physics.OverlapSphere(boxPosition, radius, hitLayerMask);
+
+        int i = 0;
+        while (i < hitColliders.Length)
+        {
+            IDamagable<DamageObject> damageObject=hitColliders[i].GetComponent(typeof(IDamagable<DamageObject>)) as IDamagable<DamageObject>;
+            if (damageObject != null)
+            {
+                damageObject.Hit(lastAttack);
+                targetHit = true;
+            }
+            i++;
+        }
+        if (hitColliders.Length == 0) targetHit = false;
+
     }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
@@ -195,9 +215,12 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
         if (lastAttack != null && Time.time - lastAttackTime < lastAttack.duration)
         {
             Gizmos.color = Color.red;
-            Vector3 boxPosition=transform.position+(Vector3.up*lastAttack.collHeight)+Vector3.right*((int)lastAttackDirection*lastAttack.collDistance);
-            Vector3 boxSize = new Vector3(lastAttack.collSize, lastAttack.collSize, hitZRange);
-            Gizmos.DrawWireCube(boxPosition,boxSize);
+            //Vector3 boxPosition=transform.position+(Vector3.up*lastAttack.collHeight)+Vector3.right*((int)lastAttackDirection*lastAttack.collDistance);
+            //Vector3 boxSize = new Vector3(lastAttack.collSize, lastAttack.collSize, hitZRange);
+            Vector3 boxPosition = swordHandPos.position+swordHandPos.forward*0.5f;
+            float radius = lastAttack.collDistance;
+            Gizmos.DrawWireSphere(boxPosition, radius);
+            //Gizmos.DrawLine(swordHandPos.position,swordHandPos.position + swordHandPos.forward * 0.5f);
         }
     }
 #endif
