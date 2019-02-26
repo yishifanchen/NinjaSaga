@@ -54,8 +54,10 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
         currentDirection = DIRECTION.Right;
 
         enemyLayer = LayerMask.NameToLayer("Enemy");
-        destroyableObjectLayer = LayerMask.NameToLayer("DestroyableObject");
+        destroyableObjectLayer = LayerMask.NameToLayer("DestroyableObjectLayer");
         hitLayerMask = (1 << enemyLayer | 1 << destroyableObjectLayer);
+
+        
     }
     private void Update()
     {
@@ -194,7 +196,6 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
         Vector3 boxPosition = swordHandPos.position;
         float radius = lastAttack.collDistance;
         Collider[] hitColliders = Physics.OverlapSphere(boxPosition, radius, hitLayerMask);
-
         int i = 0;
         while (i < hitColliders.Length)
         {

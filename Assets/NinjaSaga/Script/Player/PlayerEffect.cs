@@ -6,8 +6,16 @@ using UnityEngine;
 /// </summary>
 public class PlayerEffect : MonoBehaviour
 {
-    public void ShowEffect(GameObject effect, Vector3 pos, Quaternion quat)
+    ParticleSystem[] ps;
+    private void Start()
     {
-        //GameObject.Instantiate(effect, pos, quat);
+        ps = transform.GetComponentsInChildren<ParticleSystem>();
+    }
+    public void ShowEffect()
+    {
+        foreach(ParticleSystem p in ps)
+        {
+            p.Emit(p.main.maxParticles);
+        }
     }
 }

@@ -263,6 +263,20 @@ ModelImporter:
         floatParameter: 2
         intParameter: 0
         messageOptions: 0
+      - time: 0.27984384
+        functionName: Check4Hit
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.27496943
+        functionName: ShowEffect
+        data: GeneralAttack5
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

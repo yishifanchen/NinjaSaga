@@ -11,19 +11,23 @@ public class UnitAnimator : MonoBehaviour
     [HideInInspector]
     public Animator animator;
     private Rigidbody rb;
-    private PlayerEffect playerEffect;
+    private Dictionary<string, PlayerEffect> playerEffectDict = new Dictionary<string, PlayerEffect>();
 
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
         if (rb == null) rb = transform.parent.GetComponent<Rigidbody>();
-        if (playerEffect == null) playerEffect = transform.parent.GetComponent<PlayerEffect>();
 
         if (!animator) Debug.LogError("No animator found inside" + gameObject.name);
         if (!rb) Debug.LogError("No rigidbody component found on " + gameObject.name);
-        if (!playerEffect) Debug.LogError("No playerEffect component found on " + gameObject.name);
 
         currentDirection = DIRECTION.Right;
+
+        PlayerEffect[] peArray = gameObject.transform.parent.GetComponentsInChildren<PlayerEffect>();
+        foreach (PlayerEffect pe in peArray)
+        {
+            playerEffectDict.Add(pe.gameObject.name, pe);
+        }
     }
 
     public void SetAnimatorTrigger(string name)
@@ -68,9 +72,9 @@ public class UnitAnimator : MonoBehaviour
             yield return null;
         }
     }
-    public void ShowEffect(GameObject effect)
+    public void ShowEffect(string str)
     {
-        playerEffect.ShowEffect(effect, transform.position, transform.rotation);
+        playerEffectDict[str].ShowEffect();
     }
     public void Check4Hit()
     {
