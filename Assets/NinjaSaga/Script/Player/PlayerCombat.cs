@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(UnitState))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerMovement))]
-public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
+public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
 {
     [Header("Linked Components")]
     public Transform weaponBone;
@@ -22,6 +22,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
     [Space(5)]
     public DamageObject[] generalAttackCombo;//普攻连击数据
     public DamageObject heavyBlowData;//重击数据
+    public DamageObject skill1Data;//技能1数据
     private DamageObject lastAttack;
 
     [Header("Settings")]
@@ -57,7 +58,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
         destroyableObjectLayer = LayerMask.NameToLayer("DestroyableObjectLayer");
         hitLayerMask = (1 << enemyLayer | 1 << destroyableObjectLayer);
 
-        
+
     }
     private void Update()
     {
@@ -101,13 +102,17 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
             return;
         }
         //如果在一次普攻动作进行中又按下了普攻键，则进行普攻连击
-        if (action == INPUTACTION.GENERALATTACK && (playerState.currentState == UNITSTATE.GENERALATTACK) && Time.time > (lastAttackTime + lastAttack.duration-0.1f) && !continueGeneralAttackCombo && isGrounded)
+        if (action == INPUTACTION.GENERALATTACK && (playerState.currentState == UNITSTATE.GENERALATTACK) && Time.time > (lastAttackTime + lastAttack.duration - 0.1f) && !continueGeneralAttackCombo && isGrounded)
         {
             if (attackNum < generalAttackCombo.Length - 1)
             {
                 continueGeneralAttackCombo = true;
                 return;
             }
+        }
+        if (action == INPUTACTION.SKILL1 && isGrounded)
+        {
+            DoAttack(skill1Data,UNITSTATE.SKILL1,INPUTACTION.SKILL1);
         }
     }
     private void DoAttack(DamageObject d, UNITSTATE state, INPUTACTION inputAction)
@@ -145,7 +150,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
     /// <param name="defend"></param>
     private void Defend(bool defend)
     {
-        animator.SetAnimatorBool("Defend",defend);
+        animator.SetAnimatorBool("Defend", defend);
         if (defend)
         {
             //keep turn direction while defending
@@ -161,7 +166,8 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
             TurnToDir(currentDirection);
             SetVelocity(Vector3.zero);
             playerState.SetState(UNITSTATE.DEFEND);
-        }else if(playerState.currentState==UNITSTATE.DEFEND)
+        }
+        else if (playerState.currentState == UNITSTATE.DEFEND)
         {
             playerState.SetState(UNITSTATE.IDLE);
         }
@@ -172,7 +178,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
     /// <param name="dir"></param>
     public void TurnToDir(DIRECTION dir)
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.forward*-(int)dir);
+        transform.rotation = Quaternion.LookRotation(Vector3.forward * -(int)dir);
     }
     private void SetVelocity(Vector3 velocity)
     {
@@ -199,7 +205,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
         int i = 0;
         while (i < hitColliders.Length)
         {
-            IDamagable<DamageObject> damageObject=hitColliders[i].GetComponent(typeof(IDamagable<DamageObject>)) as IDamagable<DamageObject>;
+            IDamagable<DamageObject> damageObject = hitColliders[i].GetComponent(typeof(IDamagable<DamageObject>)) as IDamagable<DamageObject>;
             if (damageObject != null)
             {
                 damageObject.Hit(lastAttack);
@@ -218,7 +224,7 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
             Gizmos.color = Color.red;
             //Vector3 boxPosition=transform.position+(Vector3.up*lastAttack.collHeight)+Vector3.right*((int)lastAttackDirection*lastAttack.collDistance);
             //Vector3 boxSize = new Vector3(lastAttack.collSize, lastAttack.collSize, hitZRange);
-            Vector3 boxPosition = swordHandPos.position+swordHandPos.forward*0.5f;
+            Vector3 boxPosition = swordHandPos.position + swordHandPos.forward * 0.5f;
             float radius = lastAttack.collDistance;
             Gizmos.DrawWireSphere(boxPosition, radius);
             //Gizmos.DrawLine(swordHandPos.position,swordHandPos.position + swordHandPos.forward * 0.5f);
@@ -235,5 +241,5 @@ public class PlayerCombat : MonoBehaviour,IDamagable<DamageObject>
         InputManager.onInputEvent -= MovementInputEvent;
         InputManager.onCombatInputEvent -= CombatInputEvent;
     }
-    
+
 }

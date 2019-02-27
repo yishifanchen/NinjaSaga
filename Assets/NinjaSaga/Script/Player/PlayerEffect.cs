@@ -15,7 +15,7 @@ public class PlayerEffect : MonoBehaviour
     {
         foreach(ParticleSystem p in ps)
         {
-            p.Emit(p.main.maxParticles);
+            p.Play();
         }
     }
 }

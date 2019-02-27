@@ -20,5 +20,9 @@ public enum UNITSTATE
     GENERALATTACK,
     HEAVYBLOW,
     DEATH,
-    DEFEND
+    DEFEND,
+    SKILL1,
+    SKILL2,
+    SKILL3,
+    SKILL4,
 }
