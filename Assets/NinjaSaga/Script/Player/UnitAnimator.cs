@@ -55,6 +55,17 @@ public class UnitAnimator : MonoBehaviour
         StartCoroutine(AddForceCoroutine(force));
     }
     /// <summary>
+    /// 添加三维方向的力
+    /// </summary>
+    /// <param name="v3Force"></param>
+    public void AddVector3Force(string v3Force)
+    {
+        Vector3 force = new Vector3(float.Parse(v3Force.Split(',')[0]),
+            float.Parse(v3Force.Split(',')[1]),
+            float.Parse(v3Force.Split(',')[2]));
+        StartCoroutine(AddForceV3Coroutine(force, float.Parse(v3Force.Split(',')[3])));
+    }
+    /// <summary>
     /// 随着时间推移增加了较小的力
     /// </summary>
     /// <param name="force"></param>
@@ -68,7 +79,27 @@ public class UnitAnimator : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             rb.velocity = Vector2.right * (int)startDir * Mathf.Lerp(force, rb.velocity.y, MathUtilities.Sinerp(0, 1, t));
+            
             t += Time.fixedDeltaTime * speed;
+            yield return null;
+        }
+    }
+    /// <summary>
+    /// 随着时间推移增加了较小的力
+    /// </summary>
+    /// <param name="force"></param>
+    /// <returns></returns>
+    IEnumerator AddForceV3Coroutine(Vector3 v3Force,float timer)
+    {
+        DIRECTION startDir = currentDirection;
+        float speed = 8;
+        float t = 0;
+        while (t < timer)
+        {
+            yield return new WaitForFixedUpdate();
+            rb.velocity = (int)startDir * v3Force;
+            t += Time.fixedDeltaTime * speed;
+            print(rb.velocity);
             yield return null;
         }
     }

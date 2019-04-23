@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     public KeyCode DefendKey = KeyCode.D;//防御、格挡
     public KeyCode JumpKey = KeyCode.C;//跳跃
     public KeyCode Skill1 = KeyCode.S;
+    public KeyCode Skill2 = KeyCode.A;
 
     //输入委托
     public delegate void InputEventHandler(Vector2 dir);
@@ -45,6 +46,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(GeneralAttackKey)) CombatInputEvent(INPUTACTION.GENERALATTACK);
         if (Input.GetKeyDown(HeavyBlowKey)) CombatInputEvent(INPUTACTION.HEAVYBLOWKEY);
         if (Input.GetKeyDown(Skill1)) CombatInputEvent(INPUTACTION.SKILL1);
+        if (Input.GetKeyDown(Skill2)) CombatInputEvent(INPUTACTION.SKILL2);
         defendKeyDown = Input.GetKey(DefendKey);
     }
     public static void InputEvent(Vector2 dir)

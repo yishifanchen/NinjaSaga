@@ -23,6 +23,7 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
     public DamageObject[] generalAttackCombo;//普攻连击数据
     public DamageObject heavyBlowData;//重击数据
     public DamageObject skill1Data;//技能1数据
+    public DamageObject skill2Data;//技能2数据
     private DamageObject lastAttack;
 
     [Header("Settings")]
@@ -88,6 +89,14 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
     /// <param name="action"></param>
     private void CombatInputEvent(INPUTACTION action)
     {
+        if (action == INPUTACTION.SKILL1 && isGrounded)
+        {
+            DoAttack(skill1Data, UNITSTATE.SKILL1, INPUTACTION.SKILL1);
+        }
+        if (action == INPUTACTION.SKILL2 && isGrounded)
+        {
+            DoAttack(skill2Data, UNITSTATE.SKILL2, INPUTACTION.SKILL2);
+        }
         //普攻
         if (action == INPUTACTION.GENERALATTACK && playerState.currentState != UNITSTATE.GENERALATTACK && isGrounded)
         {
@@ -110,10 +119,7 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
                 return;
             }
         }
-        if (action == INPUTACTION.SKILL1 && isGrounded)
-        {
-            DoAttack(skill1Data,UNITSTATE.SKILL1,INPUTACTION.SKILL1);
-        }
+        
     }
     private void DoAttack(DamageObject d, UNITSTATE state, INPUTACTION inputAction)
     {

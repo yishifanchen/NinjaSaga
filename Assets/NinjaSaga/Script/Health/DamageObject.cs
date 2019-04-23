@@ -11,6 +11,7 @@ public class DamageObject
     public bool slowMotionEffect;
     public bool defenceOverride;
     public bool isGroundAttack;
+    public Vector3 moveDis = new Vector3(0,0,0);
 
     [Header("Hit Collider Settings")]
     public float collSize;
