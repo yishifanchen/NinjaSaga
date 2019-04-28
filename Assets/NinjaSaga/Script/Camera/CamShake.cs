@@ -12,6 +12,13 @@ public class CamShake : MonoBehaviour {
     public bool randomize;
     public float time = .5f;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Shake(0.5f);
+        }
+    }
     public void Shake(float intensity)
     {
         StartCoroutine(DoShake(intensity));

@@ -7,7 +7,8 @@ public class CamSlowMotionDelay : MonoBehaviour {
     public float slowMotionTimeScale = .2f;
     public void StartSlowMotionDelay(float duration)
     {
-
+        StopAllCoroutines();
+        StartCoroutine(SlowMotionRoutine(duration));
     }
     IEnumerator SlowMotionRoutine(float duration)
     {
@@ -19,6 +20,14 @@ public class CamSlowMotionDelay : MonoBehaviour {
             yield return null;
         }
 
-
+        GameSettings settings = Resources.Load("GameSettings", typeof(GameSettings)) as GameSettings;
+        if (settings != null)
+        {
+            Time.timeScale = settings.timeScale;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
     }
 }
