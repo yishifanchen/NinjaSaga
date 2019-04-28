@@ -99,7 +99,6 @@ public class UnitAnimator : MonoBehaviour
             yield return new WaitForFixedUpdate();
             rb.velocity = (int)startDir * v3Force;
             t += Time.fixedDeltaTime * speed;
-            print(rb.velocity);
             yield return null;
         }
     }

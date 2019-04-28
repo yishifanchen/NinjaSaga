@@ -159,7 +159,7 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
         animator.SetAnimatorBool("Defend", defend);
         if (defend)
         {
-            //keep turn direction while defending
+            //keep turn direction while defending 
             if (!canTurnWhileDefending)
             {
                 int rot = Mathf.RoundToInt(transform.rotation.eulerAngles.y);
