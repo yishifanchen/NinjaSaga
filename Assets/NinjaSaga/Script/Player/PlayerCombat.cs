@@ -204,8 +204,7 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
         //Vector3 boxPosition = transform.position + (Vector3.up * lastAttack.collHeight) + Vector3.right * ((int)lastAttackDirection * lastAttack.collDistance);
         //Vector3 boxSize = new Vector3(lastAttack.collSize / 2, lastAttack.collSize / 2, hitZRange / 2);
         //Collider[] hitColliders = Physics.OverlapBox(boxPosition, boxSize, Quaternion.identity, hitLayerMask);
-
-        Vector3 boxPosition = swordHandPos.position;
+        Vector3 boxPosition = swordHandPos.position + swordHandPos.forward * 0.5f;
         float radius = lastAttack.collDistance;
         Collider[] hitColliders = Physics.OverlapSphere(boxPosition, radius, hitLayerMask);
         int i = 0;
@@ -232,6 +231,7 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
             //Vector3 boxSize = new Vector3(lastAttack.collSize, lastAttack.collSize, hitZRange);
             Vector3 boxPosition = swordHandPos.position + swordHandPos.forward * 0.5f;
             float radius = lastAttack.collDistance;
+            Gizmos.DrawCube(boxPosition,Vector3.one*0.1f);
             Gizmos.DrawWireSphere(boxPosition, radius);
             //Gizmos.DrawLine(swordHandPos.position,swordHandPos.position + swordHandPos.forward * 0.5f);
         }

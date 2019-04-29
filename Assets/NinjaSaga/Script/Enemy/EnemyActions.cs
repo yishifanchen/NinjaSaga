@@ -90,4 +90,123 @@ public class EnemyActions : MonoBehaviour {
 
     public delegate void UnitEventHandler(GameObject Unit);
     public static event UnitEventHandler OnUnitDestroy;
+    private void Start()
+    {
+        OnStart();
+    }
+    private void FixedUpdate()
+    {
+        OnFixedUpdate();
+    }
+    void OnFixedUpdate()
+    {
+        if (updateVelocity)
+        {
+            rb.velocity = fixedVelocity;
+            updateVelocity = false;
+        }
+    }
+    void SetVelocity(Vector3 velocity)
+    {
+        fixedVelocity = velocity;
+        updateVelocity = true;
+    }
+    //we are hit  被攻击
+    public void Hit(DamageObject d)
+    {
+        //Camera Shake
+        CamShake camShake = Camera.main.GetComponent<CamShake>();
+        if (camShake != null)
+            camShake.Shake(.1f);
+    }
+    public void OnStart()
+    {
+        if (target == null) target = GameObject.FindGameObjectWithTag("Player");
+    }
+    public void WalkTo(float proximityRange,float movementMargin)
+    {
+        Vector3 dirToTarget;
+        LookAtTarget(target.transform);
+        enemyState = UNITSTATE.WALK;
+
+        if (enemyTactic == ENEMYTACTIC.ENGAGE)
+        {
+            dirToTarget = target.transform.position - (transform.position + new Vector3(0, 0, Mathf.Clamp(ZSpread, 0, attackRangeDistance)));
+        }
+        else
+        {
+            dirToTarget = target.transform.position - (transform.position + new Vector3(0, 0, ZSpread));
+        }
+        //距离玩家太远了，靠近点
+        if (distance >= proximityRange)
+        {
+            moveDirection = new Vector3(dirToTarget.x, 0, dirToTarget.z);
+            if (IsGrounded())
+            {
+                Move(moveDirection.normalized,walkSpeed);
+                anim.SetAnimatorFloat("MovementSpeed", rb.velocity.sqrMagnitude);
+                return;
+            }
+        }
+        //距离玩家太近了，走远点
+        if (distance <= proximityRange - movementMargin)
+        {
+            moveDirection = new Vector3(-dirToTarget.x, 0, 0);
+            if (IsGrounded())
+            {
+                Move(moveDirection.normalized, walkBackwardSpeed);
+                anim.SetAnimatorFloat("MovementSpeed", -rb.velocity.sqrMagnitude);
+                return;
+            }
+        }
+    }
+    public void Move(Vector3 vector,float speed)
+    {
+        if (!NoMovementStates.Contains(enemyState))
+        {
+            SetVelocity(new Vector3(vector.x * speed, rb.velocity.y + Physics.gravity.y * Time.fixedDeltaTime, vector.z * speed));
+        }
+        else
+        {
+            SetVelocity(Vector3.zero);
+        }
+    }
+    //朝向当前的目标
+    public void LookAtTarget(Transform _target)
+    {
+        if (_target != null)
+        {
+            Vector3 newDir = Vector3.zero;
+            int dir = _target.transform.position.x >= transform.position.x ? 1 : -1;
+            currentDirection = (DIRECTION)dir;
+            if (anim != null) anim.currentDirection = currentDirection;
+            newDir = Vector3.RotateTowards(transform.forward, Vector3.forward * dir, rotationSpeed * Time.deltaTime, 0);
+            transform.rotation = Quaternion.LookRotation(newDir);
+        }
+    }
+    //是否接触地面
+    public bool IsGrounded()
+    {
+        float colliderSize = capsule.bounds.extents.y - .1f;
+        if (Physics.CheckCapsule(capsule.bounds.center, capsule.bounds.center + Vector3.down * colliderSize, capsule.radius, collisionLayer)){
+            isGrounded = true;
+            return true;
+        }
+        else
+        {
+            isGrounded = false;
+            return false;
+        }
+    }
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    public void ATTACK()
+    {
+        print("gongji ");
+    }
+    public void READY()
+    {
+        print("zhunbei ");
+    }
 }
