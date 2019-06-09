@@ -29,7 +29,7 @@ public class EnemyAI : EnemyActions, IDamagable<DamageObject>{
         UNITSTATE.WALK
     };
 
-    private void Start()
+    void Start()
     {
         OnStart();
     }
