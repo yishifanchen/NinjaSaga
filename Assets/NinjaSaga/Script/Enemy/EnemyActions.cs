@@ -47,7 +47,7 @@ public class EnemyActions : MonoBehaviour {
     public bool ignoreCliffs;
     public float knockdownTimeout = 0;
     public float knockdownUpForce = 5;
-    public float knockbackForce = 4;
+    public float knockbackForce = 4;//the horizontal force of a knockdown
     private LayerMask hitLayerMask;
     public LayerMask collisionLayer;
     public bool randomizeValues = true;
@@ -117,7 +117,15 @@ public class EnemyActions : MonoBehaviour {
         //Camera Shake
         CamShake camShake = Camera.main.GetComponent<CamShake>();
         if (camShake != null)
-            camShake.Shake(.1f);
+            camShake.Shake(.2f);
+
+        //check for hit
+        anim.SetAnimatorTrigger("Hit1");
+        enemyState = UNITSTATE.HIT;
+
+        //add small force from the impact
+        LookAtTarget(d.inflictor.transform);
+        anim.AddForce(-knockbackForce);
     }
     public void OnStart()
     {
@@ -203,10 +211,13 @@ public class EnemyActions : MonoBehaviour {
     /// </summary>
     public void ATTACK()
     {
-        print("gongji ");
+        //print("gongji ");
     }
     public void READY()
     {
-        print("zhunbei ");
+        enemyState = UNITSTATE.IDLE;
+        anim.SetAnimatorTrigger("Idle");
+        anim.SetAnimatorFloat("MovementSpeed", 0);
+        Move(Vector3.zero,0);
     }
 }

@@ -25,4 +25,5 @@ public enum UNITSTATE
     SKILL2,
     SKILL3,
     SKILL4,
+    HIT,
 }

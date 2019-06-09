@@ -31,7 +31,7 @@ public class EnemyAI : EnemyActions, IDamagable<DamageObject>{
 
     private void Start()
     {
-        
+        OnStart();
     }
     void Update()
     {
