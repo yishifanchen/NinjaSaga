@@ -17,7 +17,8 @@ public enum UNITSTATE
     RUN,
     JUMPING,
     LAND,
-    GENERALATTACK,
+    GENERALATTACK,//玩家普通攻击
+    ATTACK,//敌人攻击
     HEAVYBLOW,
     DEATH,
     DEFEND,

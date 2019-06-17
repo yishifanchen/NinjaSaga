@@ -207,11 +207,43 @@ public class EnemyActions : MonoBehaviour {
         }
     }
     /// <summary>
+    /// turn towards a direction
+    /// </summary>
+    /// <param name="dir"></param>
+    public void TurnToDir(DIRECTION dir)
+    {
+        transform.rotation = Quaternion.LookRotation(Vector3.forward * (int)dir);
+    }
+    /// <summary>
     /// 攻击
     /// </summary>
     public void ATTACK()
     {
         //print("gongji ");
+        var playerMovement = target.GetComponent<PlayerMovement>();
+        if (!attackPlayerAirborne && playerMovement != null && playerMovement.jumpInProgress) return;
+        else
+        {
+            enemyState = UNITSTATE.ATTACK;
+            Move(Vector3.zero, 0f);
+            LookAtTarget(target.transform);
+            TurnToDir(currentDirection);
+
+            if (pickRandomAttack) attackCounter = Random.Range(0, attackList.Length);
+
+            anim.SetAnimatorTrigger(attackList[attackCounter].animTrigger);
+
+            if (!pickRandomAttack)
+            {
+                attackCounter += 1;
+                if (attackCounter > attackList.Length) attackCounter = 0;
+            }
+
+            lastAttackTime = Time.time;
+            lastAttack = attackList[attackCounter];
+
+            Invoke("Ready", attackList[attackCounter].duration);
+        }
     }
     public void READY()
     {
