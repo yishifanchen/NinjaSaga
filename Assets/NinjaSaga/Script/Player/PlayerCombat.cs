@@ -24,6 +24,8 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
     public DamageObject heavyBlowData;//重击数据
     public DamageObject skill1Data;//技能1数据
     public DamageObject skill2Data;//技能2数据
+    public DamageObject chargeStartData;//蓄力数据
+    public DamageObject chargeReleaseData;//蓄力释放数据
     private DamageObject lastAttack;
 
     [Header("Settings")]
@@ -96,6 +98,14 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
         if (action == INPUTACTION.SKILL2 && isGrounded)
         {
             DoAttack(skill2Data, UNITSTATE.SKILL2, INPUTACTION.SKILL2);
+        }
+        if (action == INPUTACTION.CHARGE_START && isGrounded)
+        {
+            DoAttack(chargeStartData, UNITSTATE.CHARGE_START, INPUTACTION.CHARGE_START);
+        }
+        if (action == INPUTACTION.CHARGE_RELEASE && isGrounded)
+        {
+            DoAttack(chargeReleaseData, UNITSTATE.CHARGE_RELEASE, INPUTACTION.CHARGE_RELEASE);
         }
         //普攻
         if (action == INPUTACTION.GENERALATTACK && playerState.currentState != UNITSTATE.GENERALATTACK && isGrounded)

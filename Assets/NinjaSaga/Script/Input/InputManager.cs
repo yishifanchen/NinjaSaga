@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     public KeyCode JumpKey = KeyCode.C;//跳跃
     public KeyCode Skill1 = KeyCode.S;
     public KeyCode Skill2 = KeyCode.A;
+    public KeyCode Charge = KeyCode.V;//蓄力
 
     //输入委托
     public delegate void InputEventHandler(Vector2 dir);
@@ -47,6 +48,8 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(HeavyBlowKey)) CombatInputEvent(INPUTACTION.HEAVYBLOWKEY);
         if (Input.GetKeyDown(Skill1)) CombatInputEvent(INPUTACTION.SKILL1);
         if (Input.GetKeyDown(Skill2)) CombatInputEvent(INPUTACTION.SKILL2);
+        if (Input.GetKeyDown(Charge)) CombatInputEvent(INPUTACTION.CHARGE_START);
+        if (Input.GetKeyUp(Charge)) CombatInputEvent(INPUTACTION.CHARGE_RELEASE);
         defendKeyDown = Input.GetKey(DefendKey);
     }
     public static void InputEvent(Vector2 dir)
@@ -77,4 +80,6 @@ public enum INPUTACTION
     SKILL2,
     SKILL3,
     SKILL4,
+    CHARGE_START,
+    CHARGE_RELEASE,
 }

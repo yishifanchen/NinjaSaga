@@ -11,7 +11,8 @@ public class UnitAnimator : MonoBehaviour
     [HideInInspector]
     public Animator animator;
     private Rigidbody rb;
-    private Dictionary<string, PlayerEffect> playerEffectDict = new Dictionary<string, PlayerEffect>();
+    private Dictionary<string, AnimationEventEffects> playerEffectDict = new Dictionary<string, AnimationEventEffects>();
+    //private Dictionary<string, PlayerEffect> playerEffectDict = new Dictionary<string, PlayerEffect>();
 
     private void Awake()
     {
@@ -23,8 +24,13 @@ public class UnitAnimator : MonoBehaviour
 
         currentDirection = DIRECTION.Right;
 
-        PlayerEffect[] peArray = gameObject.transform.parent.GetComponentsInChildren<PlayerEffect>();
-        foreach (PlayerEffect pe in peArray)
+        //PlayerEffect[] peArray = gameObject.transform.parent.GetComponentsInChildren<PlayerEffect>();
+        //foreach (PlayerEffect pe in peArray)
+        //{
+        //    playerEffectDict.Add(pe.gameObject.name, pe);
+        //}
+        AnimationEventEffects[] effectArray= gameObject.transform.parent.GetComponentsInChildren<AnimationEventEffects>();
+        foreach (AnimationEventEffects pe in effectArray)
         {
             playerEffectDict.Add(pe.gameObject.name, pe);
         }
@@ -104,7 +110,7 @@ public class UnitAnimator : MonoBehaviour
     }
     public void ShowEffect(string str)
     {
-        playerEffectDict[str].ShowEffect();
+        playerEffectDict[str].InstantiateEffect(0,0);
     }
     public void Check4Hit()
     {

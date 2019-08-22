@@ -26,5 +26,8 @@ public enum UNITSTATE
     SKILL2,
     SKILL3,
     SKILL4,
+    CHARGE_START,
+    CHARGE_IDLE,
+    CHARGE_RELEASE,
     HIT,
 }

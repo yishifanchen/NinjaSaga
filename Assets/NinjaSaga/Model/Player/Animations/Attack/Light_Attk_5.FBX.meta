@@ -260,7 +260,7 @@ ModelImporter:
         functionName: AddForce
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 2
+        floatParameter: 3
         intParameter: 0
         messageOptions: 0
       - time: 0.27984384
