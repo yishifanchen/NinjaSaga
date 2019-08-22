@@ -91,6 +91,12 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
     /// <param name="action"></param>
     private void CombatInputEvent(INPUTACTION action)
     {
+        animator.ResetTrigger();
+        //if(lastAttack!=null) 
+        //{
+        //    if(Time.time < (lastAttackTime + lastAttack.duration))
+        //        return;
+        //}
         if (action == INPUTACTION.SKILL1 && isGrounded)
         {
             DoAttack(skill1Data, UNITSTATE.SKILL1, INPUTACTION.SKILL1);

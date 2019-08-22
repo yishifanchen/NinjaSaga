@@ -14,6 +14,8 @@ public class UnitAnimator : MonoBehaviour
     private Dictionary<string, AnimationEventEffects> playerEffectDict = new Dictionary<string, AnimationEventEffects>();
     //private Dictionary<string, PlayerEffect> playerEffectDict = new Dictionary<string, PlayerEffect>();
 
+
+    private string[] resetTriggerName = { "GeneralAttack1" , "GeneralAttack2", "GeneralAttack3", "GeneralAttack4", "GeneralAttack5", "Skill1", "Skill2", "Skill3", "Skill4", "Charge_Start", "Charge_Release" };
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
@@ -52,6 +54,13 @@ public class UnitAnimator : MonoBehaviour
     {
         currentDirection = dir;
     }
+    public void ResetTrigger()
+    {
+        for (int i = 0; i < resetTriggerName.Length; i++)
+        {
+            animator.ResetTrigger(resetTriggerName[i]);
+        }
+    }
     /// <summary>
     /// adds a small forward force
     /// </summary>
@@ -85,7 +94,6 @@ public class UnitAnimator : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             rb.velocity = Vector2.right * (int)startDir * Mathf.Lerp(force, rb.velocity.y, MathUtilities.Sinerp(0, 1, t));
-            
             t += Time.fixedDeltaTime * speed;
             yield return null;
         }
