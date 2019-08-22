@@ -8,6 +8,7 @@ public class UnitState : MonoBehaviour
     public void SetState(UNITSTATE state)
     {
         currentState = state;
+        print(currentState);
     }
 }
 public enum UNITSTATE

@@ -101,7 +101,7 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
         }
         if (action == INPUTACTION.CHARGE_START && isGrounded)
         {
-            DoAttack(chargeStartData, UNITSTATE.CHARGE_START, INPUTACTION.CHARGE_START);
+            DoAttack(chargeStartData, UNITSTATE.CHARGE_START, INPUTACTION.CHARGE_START,false);
         }
         if (action == INPUTACTION.CHARGE_RELEASE && isGrounded)
         {
@@ -141,6 +141,16 @@ public class PlayerCombat : MonoBehaviour, IDamagable<DamageObject>
         lastAttackDirection = currentDirection;
         TurnToDir(currentDirection);
         Invoke("Ready", d.duration);
+    }
+    private void DoAttack(DamageObject d, UNITSTATE state, INPUTACTION inputAction,bool returnIdle)
+    {
+        animator.SetAnimatorTrigger(d.animTrigger);
+        playerState.SetState(state);
+        lastAttack = d;
+        lastAttack.inflictor = gameObject;
+        lastAttackTime = Time.time;
+        lastAttackDirection = currentDirection;
+        TurnToDir(currentDirection);
     }
     /// <summary>
     /// 攻击结束，玩家可以进行下一次动作
