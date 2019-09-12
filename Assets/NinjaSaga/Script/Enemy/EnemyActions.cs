@@ -236,13 +236,13 @@ public class EnemyActions : MonoBehaviour {
             if (!pickRandomAttack)
             {
                 attackCounter += 1;
-                if (attackCounter > attackList.Length) attackCounter = 0;
+                if (attackCounter >= attackList.Length) attackCounter = 0;
             }
 
             lastAttackTime = Time.time;
             lastAttack = attackList[attackCounter];
 
-            Invoke("Ready", attackList[attackCounter].duration);
+            Invoke("READY", attackList[attackCounter].duration);
         }
     }
     public void READY()
@@ -251,5 +251,21 @@ public class EnemyActions : MonoBehaviour {
         anim.SetAnimatorTrigger("Idle");
         anim.SetAnimatorFloat("MovementSpeed", 0);
         Move(Vector3.zero,0);
+    }
+    public void CheckForHit()
+    {
+        Vector3 boxPosition = transform.position + (Vector3.up * lastAttack.collHeight) + Vector3.right * ((int)currentDirection * lastAttack.collDistance);
+        Vector3 boxSize = new Vector3(lastAttack.collSize / 2, lastAttack.collSize / 2, hitZRange / 2);
+        Collider[] hitColliders = Physics.OverlapBox(boxPosition, boxSize, Quaternion.identity, hitLayerMask);
+        int i = 0;
+        while (i < hitColliders.Length)
+        {
+            IDamagable<DamageObject> damageObject = hitColliders[i].GetComponent(typeof(IDamagable<DamageObject>)) as IDamagable<DamageObject>;
+            if (damageObject != null&&damageObject!=(IDamagable<DamageObject>)this)
+            {
+                damageObject.Hit(lastAttack);
+            }
+            i++;
+        }
     }
 }

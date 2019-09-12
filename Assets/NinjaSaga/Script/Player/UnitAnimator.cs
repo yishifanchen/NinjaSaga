@@ -10,6 +10,7 @@ public class UnitAnimator : MonoBehaviour
 
     [HideInInspector]
     public Animator animator;
+    private bool isPlayer;
     private Rigidbody rb;
     private Dictionary<string, AnimationEventEffects> playerEffectDict = new Dictionary<string, AnimationEventEffects>();
     //private Dictionary<string, PlayerEffect> playerEffectDict = new Dictionary<string, PlayerEffect>();
@@ -23,6 +24,8 @@ public class UnitAnimator : MonoBehaviour
 
         if (!animator) Debug.LogError("No animator found inside" + gameObject.name);
         if (!rb) Debug.LogError("No rigidbody component found on " + gameObject.name);
+
+        isPlayer = transform.parent.CompareTag("Player");
 
         currentDirection = DIRECTION.Right;
 
@@ -122,14 +125,60 @@ public class UnitAnimator : MonoBehaviour
     }
     public void Check4Hit()
     {
-        PlayerCombat playerCombat = transform.parent.GetComponent<PlayerCombat>();
-        if (playerCombat != null)
+        if (isPlayer)
         {
-            playerCombat.CheckForHit();
+            PlayerCombat playerCombat = transform.parent.GetComponent<PlayerCombat>();
+            if (playerCombat != null)
+            {
+                playerCombat.CheckForHit();
+            }
+            else
+            {
+                Debug.LogError("No playerCombat component find on object" + transform.parent);
+            }
         }
         else
         {
-            Debug.LogError("No playerCombat component find on object"+transform.parent);
+            EnemyAI AI = transform.parent.GetComponent<EnemyAI>();
+            if (AI != null)
+            {
+                AI.CheckForHit();
+            }
+            else
+            {
+                Debug.Log("no enemy AI component found on gameObject" + transform.parent.name);
+            }
         }
+    }
+    public void PlaySFX(string sfxName)
+    {
+        //todo 播放音效
+    }
+    /// <summary>
+    /// 闪烁特效
+    /// </summary>
+    /// <param name="delayBeforeStart"></param>
+    /// <returns></returns>
+    public IEnumerator FlickerCoroutine(float delayBeforeStart)
+    {
+        yield return new WaitForSeconds(delayBeforeStart);
+
+        Renderer[] charRenderers = GetComponentsInChildren<Renderer>();
+        if (charRenderers.Length > 0)
+        {
+            float t = 0;
+            while (t < 1)
+            {
+                float speed = Mathf.Lerp(15, 35, MathUtilities.Coserp(0, 1, t));
+                float i = Mathf.Sin(Time.time * speed);
+                foreach (Renderer r in charRenderers)
+                    r.enabled = i > 0;
+                t += Time.deltaTime/2;
+                yield return null;
+            }
+            foreach (Renderer r in charRenderers)
+                r.enabled = false;
+        }
+        Destroy(transform.parent.gameObject);
     }
 }
